@@ -12,7 +12,7 @@ class Debug_ErrorHook_Catcher
         "E_ERROR", "E_WARNING", "E_PARSE", "E_NOTICE", "E_CORE_ERROR",
         "E_CORE_WARNING", "E_COMPILE_ERROR", "E_COMPILE_WARNING",
         "E_USER_ERROR", "E_USER_WARNING", "E_USER_NOTICE", "E_STRICT",
-        "E_RECOVERABLE_ERROR"
+        "E_RECOVERABLE_ERROR", "E_DEPRECATED", "E_USER_DEPRECATED",
     );
         
     public function __construct()
@@ -42,7 +42,7 @@ class Debug_ErrorHook_Catcher
         $trace = debug_backtrace();
         array_shift($trace);
         if ($this->_notify($errno, $errstr, $errfile, $errline, $trace) === false) {
-        	return $this->_callPrevHdl($errno, $errstr, $errfile, $errline, $trace);
+            return $this->_callPrevHdl($errno, $errstr, $errfile, $errline, $trace);
         }
     }
     
@@ -70,17 +70,19 @@ class Debug_ErrorHook_Catcher
         // Translate error number to error name.
         if (is_numeric($errno)) {
             foreach ($this->_types as $t) {
-                $e = constant($t);
-                if ($errno == $e) {
-                    $errno = $t;
-                    break;
+                if (defined($t)) {
+                    $e = constant($t);
+                    if ($errno == $e) {
+                        $errno = $t;
+                        break;
+                    }
                 }
             }
         }
         // Send data to all notifiers.
         foreach ($this->_notifiers as $notifier) {
             if ($notifier->notify($errno, $errstr, $errfile, $errline, $trace) === true) {
-            	return true;
+                return true;
             }
         }
         return false;

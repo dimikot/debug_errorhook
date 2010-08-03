@@ -1,5 +1,5 @@
 Debug_ErrorHook: Intercept PHP errors (including fatals) and process them (e.g. send to E-mail).
-(C) Dmitry Koterov, http://dklab.ru/lib/Debug_ErrorHook/
+(C) Dmitry Koterov, http://en.dklab.ru/lib/Debug_ErrorHook/
 
 This library allows to intercept PHP errors (including fatal!) with their 
 context (file name, line number, often - stack trace, environment etc.) 

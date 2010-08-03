@@ -70,7 +70,7 @@ class Debug_ErrorHook_RemoveDupsWrapper implements Debug_ErrorHook_INotifier
     {
         $file = $this->_getLockFname($hash);
     	file_put_contents($file, "$errfile:$errline");
-    	chmod($file, 0777);
+    	@chmod($file, 0666);
     	$this->_gc();
     }
     
