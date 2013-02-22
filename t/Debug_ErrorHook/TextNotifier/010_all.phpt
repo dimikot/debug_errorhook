@@ -55,6 +55,5 @@ SESSION:
     array(
         "session" => "var",
     )
-
-Notice: Undefined variable: a in * on line *
+Error [8]: Undefined variable: a in * on line *
 

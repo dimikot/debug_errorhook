@@ -10,7 +10,7 @@ f();
 
 
 ?>
---EXPECT--
+--EXPECTF--
 array (
   0 => 'test@example.com',
   1 => '[ERROR] E_NOTICE: Undefined variable: a at * on line *',
@@ -18,8 +18,9 @@ array (
 at * on line *
 ',
   3 => 'From: test@example.com
-Content-Type: text/plain; charset=UTF-8',
+Content-Type: text/plain; charset=UTF-8
+Message-Id: <%s@errorhook>
+In-Reply-To: <%s@errorhook>',
 )
-
-Notice: Undefined variable: a in * on line *
+Error [8]: Undefined variable: a in * on line *
 

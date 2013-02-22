@@ -23,6 +23,9 @@ $printListenerWithNoDups->addNotifier(new TestRemoveDups(new PrintNotifier(), 'f
 
 echo $a;
 
+if (is_dir("fixture")) echo "Fixture dir exists. Its contents:\n";
+else echo "Fixture dir DOES NOT exist!\n";
+
 print_r(glob("fixture/*"));
 
 ?>
@@ -34,8 +37,8 @@ Notification: array (
   'errline' => '*',
   'tracecount' => 0,
 )
-
-Notice: Undefined variable: a in * on line *
+Error [8]: Undefined variable: a in * on line *
+Fixture dir exists. Its contents:
 Array
 (
 )

@@ -17,8 +17,7 @@ Notification: array (
   'errline' => '*',
   'tracecount' => 0,
 )
-
-Notice: Undefined variable: non_existed in * on line *
+Error [8]: Undefined variable: non_existed in * on line *
 Notification: array (
   'errno' => 'E_WARNING',
   'errstr' => 'fopen(non-existed): failed to open stream: No such file or directory',
@@ -26,5 +25,4 @@ Notification: array (
   'errline' => '*',
   'tracecount' => 1,
 )
-
-Warning: fopen(non-existed): failed to open stream: No such file or directory in * on line *
+Error [2]: fopen(non-existed): failed to open stream: No such file or directory in * on line *

@@ -13,6 +13,7 @@ function printr($value, $comment=null)
     if ($comment !== null) echo "$comment: ";
     var_export($value);
     echo "\n";
+    ob_flush(); // essential! else above echo may be flushed AFTER a notice to STDERR
 }
 
 function cleanupStdout($s)
@@ -22,9 +23,17 @@ function cleanupStdout($s)
 	return $s;
 }
 
+function error_handler($errno, $errstr, $errfile, $errline)
+{
+    if ($errno & error_reporting()) {
+        echo "Error [$errno]: $errstr in $errfile on line $errline\n";
+    }
+    return true; // skip built-in error handler
+}
+
 class PrintNotifier implements Debug_ErrorHook_INotifier
 {
-	public function notify($errno, $errstr, $errfile, $errline, $trace)
+	public function notify($errno, $errstr, $errfile, $errline, $trace, $hash = null, $prependText = null)
 	{
 		printr(
 			array(
@@ -33,7 +42,7 @@ class PrintNotifier implements Debug_ErrorHook_INotifier
 				"errfile" => basename($errfile),
 				"errline" => "*",
 				"tracecount" => count($trace)
-			),
+			) + ($prependText? array("prependText" => $prependText) : array()),
 			"Notification"
 		);
 	}
@@ -42,4 +51,4 @@ class PrintNotifier implements Debug_ErrorHook_INotifier
 
 if (function_exists("xdebug_disable")) xdebug_disable();
 ob_start("cleanupStdout");
-
+set_error_handler('error_handler');

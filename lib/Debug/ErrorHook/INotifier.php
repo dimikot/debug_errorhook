@@ -5,15 +5,17 @@
  */
 interface Debug_ErrorHook_INotifier
 {
-	/**
-	 * Called when an error occurred.
-	 * 
-	 * @param string $errno
-	 * @param string $errstr
-	 * @param string $errfile
-	 * @param string $errline
-	 * @param array $trace
-	 * @return void
-	 */
-    public function notify($errno, $errstr, $errfile, $errline, $trace);
+    /**
+     * Called when an error occurred.
+     *
+     * @param string $errno
+     * @param string $errstr
+     * @param string $errfile
+     * @param string $errline
+     * @param array $trace
+     * @param string $hash
+     * @param string $prependText
+     * @return void
+     */
+    public function notify($errno, $errstr, $errfile, $errline, $trace, $hash = null, $prependText = null);
 }

@@ -15,6 +15,4 @@ Notification: array (
   'errline' => '*',
   'tracecount' => 1,
 )
-
-Notice: test in * on line *
-
+Error [1024]: test in * on line *

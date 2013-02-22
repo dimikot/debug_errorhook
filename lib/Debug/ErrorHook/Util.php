@@ -14,7 +14,7 @@ class Debug_ErrorHook_Util
     {
         $escapes = "\"\r\t\x00\$";
         $tab = '    ';
- 
+
         if (is_bool($var)) {
             return $var ? 'TRUE' : 'FALSE';
         } elseif (is_string($var)) {
@@ -26,19 +26,19 @@ class Debug_ErrorHook_Util
         } elseif (is_resource($var)) {
             return 'NULL /* ' . $var . ' */';
         }
- 
+
         if ($maxLevel < $level) {
             return 'NULL /* ' . (string) $var . ' MAX LEVEL ' . $maxLevel . " REACHED*/";
         }
- 
+
         if (is_array($var)) {
             $return = "array(\n";
         } else {
             $return = get_class($var) . "::__set_state(array(\n";
         }
- 
+
         $offset = str_repeat($tab, $level + 1);
- 
+
         foreach ((array) $var as $key => $value) {
             $return .= $offset;
             if (is_int($key)) {
@@ -48,15 +48,16 @@ class Debug_ErrorHook_Util
             }
             $return .= ' => ' . self::varExport($value, $maxLevel, $level + 1) . ",\n";
         }
- 
+
         return $return
             . str_repeat($tab, $level)
             . (is_array($var) ? ')' : '))');
     }    
-    
+
     /**
      * Analog for debug_print_backtrace(), but returns string.
      *
+     * @param array
      * @return string
      */
     public static function backtraceToString($backtrace)
@@ -74,7 +75,7 @@ class Debug_ErrorHook_Util
             $function = (isset($call['class'])) ?
                 $call['class'] . (isset($call['type']) ? $call['type'] : '.') . $call['function'] :
                 $call['function'];
-    
+
             $params = '';
             if (isset($call['args']) && is_array($call['args'])) {
                 $args = array();
@@ -89,14 +90,14 @@ class Debug_ErrorHook_Util
                 }
                 $params = implode(', ', $args);
             }
-    
+
             $calls[] = sprintf('#%d  %s(%s) called at [%s]',
                 $i,
                 $function,
                 $params,
                 $location);
         }
-    
+
         return implode("\n", $calls) . "\n";
-    }	
+    }
 }

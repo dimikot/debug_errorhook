@@ -14,13 +14,13 @@ class Debug_ErrorHook_Catcher
         "E_USER_ERROR", "E_USER_WARNING", "E_USER_NOTICE", "E_STRICT",
         "E_RECOVERABLE_ERROR", "E_DEPRECATED", "E_USER_DEPRECATED",
     );
-        
+
     public function __construct()
     {
         $this->_prevHdl = set_error_handler(array($this, "_handleNotice"));
         register_shutdown_function(array($this, "_handleFatal"));
     }
-    
+
     public function remove()
     {
         restore_error_handler();
@@ -33,19 +33,34 @@ class Debug_ErrorHook_Catcher
     {
         $this->_notifiers[] = $notifier;
     }
-    
-    public function _handleNotice($errno, $errstr, $errfile, $errline)
+
+    public function triggerException(Exception $e, $msg = null)
+    {
+        return $this->_handleNonFatal(
+            E_USER_ERROR,
+            "exception '" . get_class($e) . "' with message: '" . ($msg !== null? $msg : $e->getMessage()) . "'",
+            $e->getFile(), $e->getLine(),
+            $e->getTrace()
+        );
+    }
+
+    private function _handleNonFatal($errno, $errstr, $errfile, $errline, $trace)
     {
         if (!($errno & error_reporting())) {
             return $this->_callPrevHdl($errno, $errstr, $errfile, $errline);
         }
-        $trace = debug_backtrace();
-        array_shift($trace);
         if ($this->_notify($errno, $errstr, $errfile, $errline, $trace) === false) {
             return $this->_callPrevHdl($errno, $errstr, $errfile, $errline, $trace);
         }
     }
-    
+
+    public function _handleNotice($errno, $errstr, $errfile, $errline)
+    {
+        $trace = debug_backtrace();
+        array_shift($trace);
+        return $this->_handleNonFatal($errno, $errstr, $errfile, $errline, $trace);
+    }
+
     public function _handleFatal()
     {
         $error = error_get_last();
@@ -54,7 +69,7 @@ class Debug_ErrorHook_Catcher
         }
         $this->_notify($error['type'], $error['message'], $error['file'], $error['line'], null);
     }
-    
+
     /**
      * Processes a notification.
      *
@@ -87,7 +102,7 @@ class Debug_ErrorHook_Catcher
         }
         return false;
     }
-    
+
     private function _callPrevHdl()
     {
         if ($this->_prevHdl) {

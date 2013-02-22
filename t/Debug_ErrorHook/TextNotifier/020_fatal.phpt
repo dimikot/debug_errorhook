@@ -14,8 +14,8 @@ non_existed_function();
 
 
 ?>
---EXPECT--
-Fatal error: Call to undefined function non_existed_function() in * on line *
+--EXPECTF--
+%sCall to undefined function non_existed_function()%s
 Text notification:
 ------------------
 Subject: E_ERROR: Call to undefined function non_existed_function() at * on line *

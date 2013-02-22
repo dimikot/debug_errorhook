@@ -8,8 +8,8 @@ non_existed_function();
 
 ?>
 
---EXPECT--
-Fatal error: Call to undefined function non_existed_function() in * on line *
+--EXPECTF--
+%sCall to undefined function non_existed_function()%s
 Notification: array (
   'errno' => 'E_ERROR',
   'errstr' => 'Call to undefined function non_existed_function()',

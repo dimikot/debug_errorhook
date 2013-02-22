@@ -13,12 +13,12 @@ f();
 
 ?>
 
---EXPECT--
-Fatal error: Uncaught exception 'Exception' with message 'unhandled' in *:*
+--EXPECTF--
+%sUncaught exception 'Exception' with message 'unhandled'%s
 Stack trace:
-#0 *(*): f()
-#1 {main}
-  thrown in * on line *
+#0 %s
+#1 %s
+  thrown in %s
 Notification: array (
   'errno' => 'E_ERROR',
   'errstr' => 'Uncaught exception \'Exception\' with message \'unhandled\' in *:*
